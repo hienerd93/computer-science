@@ -150,3 +150,132 @@ print(s[3:8])
 > `dir()`: `lower`, `upper`, `find`, `replace`, `lstrip`, `rstrip`, `strip`, `startswith`  
 > all string is Unicode
 
+## Reading Files
+
+```py
+handle = open(filename, mode)
+```
+
+> return a handle(TextIOWrapper) use manipulate the file, mode `r` and `w`
+> newline `\n`
+
+```py
+fname = input('> Enter the file name: ')
+try
+    fhand = open(filename)
+except
+    print('Fine cannot open')
+    quit()
+
+content = fhand.read()
+for line in fhand:
+    line = line.rstrip()
+    if line.startswith('From'):
+        print(line)    
+```
+
+## List
+
+> Programing: Algorithms and Data Structures  
+> Strings are immutable, Lists are mutable  
+> `range(4)`  
+> `+` concat and slice like the strings
+
+```py
+stuff = list()
+```
+
+![split](split.png)
+
+```py
+fhand = open(filename)
+for line in fhand:
+    line = line.rstrip()
+    if not line.startswith('From') : continue
+    words = line.split()
+    print(works[2])
+```
+
+## Dictionary
+
+> Dictionary: label and List: order  
+
+```py
+counts = dict()
+names = ['csev', 'cwen', 'csev', 'zquian', 'cwen']
+for name in names:
+    counts[name] = counts.get(name, 0) + 1
+print(counts)
+```
+
+> `keys()`, `values()`, `items()`
+
+![count](count.png)
+
+## Tuple
+
+```py
+l = list()
+t = tuple()
+(x, y) = (7, 'fred')
+for (k,v) in d.items():
+    print(k, v)
+t = d.items()
+```
+
+> Compare Tuple
+
+```py
+t = sorted(d.items())
+
+temp = list()
+for (k,v) in d.items():
+    temp.append((v, k))
+temp = sorted(temp)
+```
+
+![top10word](top10word.png)
+
+```py
+print(sorted([(v, k) in for k, v in d.items()]))
+```
+
+## Regular Expression
+
+![regex](regex.png)
+
+```py
+import re
+```
+
+> `re.search()`, `re.findall()`
+
+![x-spam](x-spam.png)
+
+## Network
+
+![tcp](tcp.png)
+
+> TCP: Transport Control Protocol
+> HTTP: HyperText Transper Protocol
+
+> Protocol: A set of rules that all parties follow so we can predict each other's behavior  
+> And not bump into each other
+
+![telnet](telnet.png)
+
+```py
+import socket
+
+mysock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+mysock.connect(('data.pr4e.org', 80))
+cmd = 'GET http://data.pr4e.org/romeo.txt HTTP/1.0\n\n'.encode()
+mysock.send(cmd)
+
+while True:
+    data = mysock.recv(512)
+    if (len(data) < 1):
+        break
+    print(data.decode())
+mysock.close()
+```
