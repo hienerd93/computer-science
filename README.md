@@ -400,3 +400,208 @@ info = json.loads(data)
 
 > Service Orient Approach(API)  
 > Multi Systems
+
+```py
+import urllib.request, urllib.parse, urllib.error
+import json
+
+serviceurl = 'http://maps.googleapis.com/maps/api/geocode/json?'
+
+while True:
+    address = input('Enter location: ')
+    if len(address) < 1: break
+
+    url = serviceurl + urllib.parse.urlencode({'address': address})
+
+    print('Retriveving', url)
+    uh = urllib.request.urlopen(url)
+    data = uh.read().decode()
+    print('Retriveving', len(data), 'characters')
+
+    try:
+        js = json.loads(data)
+    except:
+        js = None
+    
+    if not js or 'status' not in js or js["status"] !== 'OK':
+        print('==== Failure To Retriveving ====')
+        print(data)
+        continue
+    
+    lat = js["results"][0]["geometry"]["location"]["lat"]
+    lng = js["results"][0]["geometry"]["location"]["lng"]
+    print('lat', lat, 'lng', lng)
+    location = js["results"][0]["formatted_address"]
+    print(location)
+```
+
+API is not free(protocol and limit for access)
+
+```py
+import urllib.request, urllib.parse, urllib.error
+import json
+import twurl
+
+TWITTER_URL = 'https://api.twitter.com/1.1/friends/list.json'
+
+while True:
+    print('')
+    acct = input('Enter Twitter Account:')
+    if (len(acct) < 1): break
+    url = twurl.augment(TWITTER_URL, {"screen_name": acct, "count": "5"})
+    
+    print('Retrieving', url)
+    connection = urllib.request.urlopen(url)
+    data = connection.read().decode()
+    headers = dict(connection.getheaders())
+    print('Remaining', headers["x-rate-limit-remaining"])
+    js = json.loads(data)
+    print(json.dumps(js, indent=4))
+
+    for u in js["users"]:
+        print(u["screen_name"])
+        s = u["status"]["text"]
+        print('   ', s[:50])
+
+### hidden.py
+
+def oauth():
+    return {
+        "consumer_key": "h7Lu...Ng"
+        "consumer_secret": "defe...MN"
+        "token_key": "44234...2f2"
+        "token_secret": "3829...32f"
+    }
+
+### twurl.py
+
+import urllib
+import oauth
+import hidden
+
+def augment(url, parameters)
+    secrets = hidden.oauth()
+    consumer = oauth.OAuthConsumer(secrets["consumer_key"], secrets["consumer_secret"])
+    token = oauth.OAuthToken(secrets["token_key"], secrets["token_secret"])
+    oauth_request = oauth.OAuthRequest.from_consumer_and_token(consumer, token=token, http_method='GET', http_url=url, parameters=parameters)
+    oauth_request.sign_request(oauth.OAuthSignatureMethod_HMAC_SAH1(), consumer, token)
+    return oauth_request.to_url()
+```
+
+## Object
+
+> Input -> Process -> Output
+
+
+![object1](object1.png)
+
+![object2](object2.png)
+
+* Class  
+* Method or Message  
+* Field or attribute  
+* Object or Instance
+
+![class](class.png)
+
+> `dir()` and `type()`  
+> `constructor` and `destructor`(seldom)
+
+![lifecycle](lifecycle.png)
+
+![inheritance](inheritance.png)
+
+## Database
+
+> [DB Browser for SQLite](https://sqlitebrowser.org)  
+> Sort data -> Relational Database
+
+* Database  
+* Relation  
+* Tuple (or row)  
+* Attribute (also column or field)
+
+> Structured Query Language
+
+* Create a table  
+* Retrieve some data  
+* Insert data  
+* Delete data
+
+![database](database.png)
+![fdatabase](fdatabase.png)
+
+> Database Model(Schema)
+
+```sql
+CREATE TABLE "Users" ("name" TEXT, "email" TEXT)
+
+INSERT INTO Users (name, email) VALUES ("Chuck", "csev@umich.edu")
+DELETE FROM Users WHERE email="csev@umich.edu"
+UPDATE Users SET name="Chales" WHERE email="csev@umich.edu"
+SELECT * FROM Users WHERE email="csev@umich.edu"
+SELECT * FROM Users ORDER BY email DESC
+```
+
+> Don't put the same string data in twice - use a relationship instead  
+> Define Objects -> Relationship between them
+
+### Database Normalization 3NF
+
+* Do not replicate data  
+* integers for keys
+
+> Key
+
+* Primary key  
+* Logical key  
+* Foreign key
+
+![table](table.png)
+
+```sql
+CREATE TABLE Album ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE, "name" TEXT)
+SELECT Track.title, Genre.name FROM Track join Genre ON Track.genre_id = Genre.id
+```
+
+> without `join` = cross join
+
+```sql
+CREATE TABLE User ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE, "name" TEXT, email TEXT)
+CREATE TABLE Course ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE, "title" TEXT UINQUE)
+CREATE TABLE Member ("user_id" INTEGER, "course_id" INTEGER
+    role INTEGER
+    PRIMARY KEY(user_id, course_id)
+)
+```
+
+> reduces the amount of data which must be scanned.
+> Indexes improve access performance for things like string fields
+> Constraints on data
+> Transactions allow SQL operations to be grouped and done as a unit
+
+## Visualizing data
+
+![map](map.png)
+
+[hadoop](https://hadoop.apache.org)  
+[spark](https://spark.apache.org)  
+[redshift](https://aws.amazon.com/redshift)
+
+![where](where.png)
+
+> Most data needs to be cleaned before using it.
+
+### Google Architecture
+
+* Web Crawling  
+* Index Building  
+* Searching
+
+![crawler](crawler.png)
+
+> Index: It determines which pages are most highly connected
+
+![page_rank](page_rank.png)
+
+![mail](mail.png)
