@@ -171,7 +171,7 @@ content = fhand.read()
 for line in fhand:
     line = line.rstrip()
     if line.startswith('From'):
-        print(line)    
+        print(line)
 ```
 
 ## List
@@ -258,7 +258,6 @@ import re
 
 > TCP: Transport Control Protocol
 > HTTP: HyperText Transper Protocol
-
 > Protocol: A set of rules that all parties follow so we can predict each other's behavior  
 > And not bump into each other
 
@@ -324,9 +323,7 @@ for tag in tags:
 > Python Dictionary -> Serialize -> JSON, XML -> De-Serialize -> JavaHashMap  
 > XML: Start-End Tag, Text Content, Attribute, Self Closing Tag  
 > XML as Tree like DOM
-
 > XML Document + XML Schema Contract = XML Validator
-
 > XSD Structure
 
 ```xml
@@ -422,12 +419,12 @@ while True:
         js = json.loads(data)
     except:
         js = None
-    
+
     if not js or 'status' not in js or js["status"] !== 'OK':
         print('==== Failure To Retriveving ====')
         print(data)
         continue
-    
+
     lat = js["results"][0]["geometry"]["location"]["lat"]
     lng = js["results"][0]["geometry"]["location"]["lng"]
     print('lat', lat, 'lng', lng)
@@ -449,7 +446,7 @@ while True:
     acct = input('Enter Twitter Account:')
     if (len(acct) < 1): break
     url = twurl.augment(TWITTER_URL, {"screen_name": acct, "count": "5"})
-    
+
     print('Retrieving', url)
     connection = urllib.request.urlopen(url)
     data = connection.read().decode()
@@ -491,7 +488,6 @@ def augment(url, parameters)
 ## Object
 
 > Input -> Process -> Output
-
 
 ![object1](object1.png)
 
