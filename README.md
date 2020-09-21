@@ -279,3 +279,124 @@ while True:
     print(data.decode())
 mysock.close()
 ```
+
+## Text Process
+
+> ASCII: 1 character, 8 bits, 1 byte; `ord()`, total 256  
+> Unicode: > 10^9 character  
+> UTF-8 1-4 byte recommended, UTF-16 Fixed length, UTF-32 Fixed length  
+> string.encode and bytes.decode
+
+## Urllib
+
+```py
+import urllib.request, urllib.parse, urllib.error
+
+counts = dict()
+fhand = urllib.request.urlopen('http://data.pr4e.org/romeo.txt')
+for line in fhand:
+    words = line.decode().split()
+    for word in words:
+        counts[word] = counts.get(word, 0) + 1
+print(counts)
+```
+
+## Web scraping
+
+> Support to pull data from web  
+> Beautiful Soup `http://www.py4e.com/code3/bs4.zip`
+
+```py
+import urllib.request, urllib.parse, urllib.error
+from bs4 import BeautifulSoup
+
+url = input('Enter - ')
+html = urllib.request.urlopen(url).read()
+soup = BeautifulSoup(html, 'html.parser')
+
+tags = soup('a')
+for tag in tags:
+    print(tag.get('href', None))
+```
+
+## XML and JSON
+
+> Python Dictionary -> Serialize -> JSON, XML -> De-Serialize -> JavaHashMap  
+> XML: Start-End Tag, Text Content, Attribute, Self Closing Tag  
+> XML as Tree like DOM
+
+> XML Document + XML Schema Contract = XML Validator
+
+> XSD Structure
+
+```xml
+<xs:complexType name="person">
+    <xs:sequence>
+        <xs:element name="lastname" type="xs:string" />
+        <xs:element name="age" type="xs:integer" />
+        <xs:element name="dateborn" type="xs:date" />
+        <xs:element name="country">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="FR" />
+                    <xs:enumeration value="US" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:element>
+    </xs:sequence>
+</xs:complexType>
+```
+
+```py
+import xml.etree.ElementTree as ET
+data = '''<person>
+    <name>Chuck</name>
+    <phone type="intl">
+        +1 734 303 4456
+    </phone>
+    <email hide="yes"/>
+</person>'''
+
+input = '''<stuff>
+    <users>
+        <user x="2">
+            <id>001</id>
+            <name>Chunk</name>
+        </user>
+        <user x="7">
+            <id>009</id>
+            <name>Shine</name>
+        </user>
+    </users>
+</stuff>'''
+
+tree = ET.fromstring(data)
+print('Name:', tree.find('name').text)
+print('Attr:', tree.find('email').get('hide'))
+stuff = ET.fromstring(input)
+lst = stuff.findall('users/user')
+print('User count:', len(lst))
+```
+
+```py
+import json
+data = '''{
+    "name": "Chuck",
+    "phone": {
+        "type": "intl"
+        "number": "+1 734 303 4456"
+    },
+    "email": {
+        "hide": "yes"
+    }
+}'''
+
+info = json.loads(data)
+```
+
+> Json represents data as nested lists and dictionaries
+
+## API
+
+> Service Orient Approach(API)  
+> Multi Systems
